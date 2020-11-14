@@ -18,11 +18,24 @@ func main() {
 	displayBoard(sudokuBoard)
 }
 
-func solve(board [9][9]int) {
-
+func solve(board [9][9]int) bool {
+	row, col := findEmptyCell(board)
+	if row == -1{
+		return true
+	}
+	for i := 1; i < 10; i++ {
+		if isValid(board, i, row, col){
+			board[row][col] = i
+			if solve(board) {
+				return true
+			}
+			board[row][col] = 0
+		}
+	}
+	return false
 }
 
-func isValid(board[9][9]int, num int, position int) {
+func isValid(board[9][9]int, num int, row int, col int)  bool{
 
 }
 
