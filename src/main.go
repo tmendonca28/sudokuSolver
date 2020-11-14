@@ -49,6 +49,13 @@ func displayBoard(board[9][9]int) {
 	fmt.Println(" ┖─────────┸─────────┸─────────┚")
 }
 
-func findEmptyCell(board[9][9]int) {
-
+func findEmptyCell(board[9][9]int) (int, int){
+	for i, _ := range board {
+		for j, _ := range board {
+			if board[i][j] == 0 {
+				return i, j
+			}
+		}
+	}
+	return -1, -1
 }
