@@ -1,8 +1,14 @@
 package main
-import "fmt"
+
+import (
+	"fmt"
+	"log"
+	"time"
+)
 
 func main() {
 	// defining a board
+	defer timeTaken(time.Now())
 	var sudokuBoard = [9][9]int{
 		{0, 0, 0, 0, 0, 0, 6, 9, 0},
 		{0, 0, 0, 1, 4, 0, 8, 2, 0},
@@ -51,13 +57,13 @@ func findEmptyCell(board[9][9]int) (int, int){
 
 func isValid(board[9][9]int, num int, row int, col int)  bool{
 	// Check row
-	for i, _ := range board {
+	for i := range board {
 		if (board[row][i] == num) && (col != i) {
 			return false
 		}
 	}
 	// Check column
-	for j, _ := range board {
+	for j := range board {
 		if (board[j][col] == num) && (row != j) {
 			return false
 		}
@@ -78,7 +84,7 @@ func isValid(board[9][9]int, num int, row int, col int)  bool{
 }
 
 func displayBoard(board[9][9]int) {
-	for i, _ := range board {
+	for i := range board {
 		if i%3 == 0 {
 			if i == 0 {
 				fmt.Println(" ┎─────────┰─────────┰─────────┒")
@@ -86,7 +92,7 @@ func displayBoard(board[9][9]int) {
 				fmt.Println(" ┠─────────╂─────────╂─────────┨")
 			}
 		}
-		for j, _ := range board {
+		for j := range board {
 			if j%3 == 0 {
 				fmt.Print(" ┃  ")
 			}
@@ -100,3 +106,7 @@ func displayBoard(board[9][9]int) {
 	fmt.Println(" ┖─────────┸─────────┸─────────┚")
 }
 
+func timeTaken(start time.Time) {
+	duration := time.Since(start)
+	log.Printf("Took %s", duration)
+}
