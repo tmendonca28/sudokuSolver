@@ -4,28 +4,31 @@ import "fmt"
 func main() {
 	// defining a board
 	var sudokuBoard = [9][9]int{
-		{8, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 3, 6, 0, 0, 0, 0, 0},
-		{0, 7, 0, 0, 9, 0, 2, 0, 0},
-		{0, 5, 0, 0, 0, 7, 0, 0, 0},
-		{0, 0, 0, 0, 4, 5, 7, 0, 0},
-		{0, 0, 0, 1, 0, 0, 0, 3, 0},
-		{0, 0, 1, 0, 0, 0, 0, 6, 8},
-		{0, 0, 8, 5, 0, 0, 0, 1, 0},
-		{0, 9, 0, 0, 0, 0, 4, 0, 0},
+		{0, 0, 0, 0, 0, 0, 6, 9, 0},
+		{0, 0, 0, 1, 4, 0, 8, 2, 0},
+		{5, 0, 0, 9, 0, 0, 0, 0, 4},
+		{6, 0, 0, 0, 0, 5, 0, 0, 0},
+		{0, 0, 3, 0, 2, 0, 4, 0, 0},
+		{0, 0, 0, 7, 0, 0, 0, 0, 9},
+		{3, 0, 0, 0, 0, 1, 0, 0, 7},
+		{0, 8, 4, 0, 3, 2, 0, 0, 0},
+		{0, 9, 2, 0, 0, 0, 0, 0, 0},
 	}
 	fmt.Println("The board looks as follows:")
 	displayBoard(sudokuBoard)
+	fmt.Println("Solving ......")
+	solve(sudokuBoard)
 }
 
 func solve(board [9][9]int) bool {
 	row, col := findEmptyCell(board)
 	if row == -1{
+		displayBoard(board)
 		return true
 	}
-	for i := 1; i < 10; i++ {
-		if isValid(board, i, row, col){
-			board[row][col] = i
+	for num := 1; num < 10; num++ {
+		if isValid(board, num, row, col) == true{
+			board[row][col] = num
 			if solve(board) {
 				return true
 			}
@@ -35,8 +38,43 @@ func solve(board [9][9]int) bool {
 	return false
 }
 
-func isValid(board[9][9]int, num int, row int, col int)  bool{
+func findEmptyCell(board[9][9]int) (int, int){
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			if board[i][j] == 0 {
+				return i, j
+			}
+		}
+	}
+	return -1, -1
+}
 
+func isValid(board[9][9]int, num int, row int, col int)  bool{
+	// Check row
+	for i, _ := range board {
+		if (board[row][i] == num) && (col != i) {
+			return false
+		}
+	}
+	// Check column
+	for j, _ := range board {
+		if (board[j][col] == num) && (row != j) {
+			return false
+		}
+	}
+
+	// Check box
+	boxX := col/3
+	boxY := row/3
+
+	for i := boxY *3; i < boxY*3 + 3; i++ {
+		for j := boxX *3; j < boxX*3 + 3; j++ {
+			if (board[i][j] == num) && (i != row && j != col) {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func displayBoard(board[9][9]int) {
@@ -62,13 +100,3 @@ func displayBoard(board[9][9]int) {
 	fmt.Println(" ┖─────────┸─────────┸─────────┚")
 }
 
-func findEmptyCell(board[9][9]int) (int, int){
-	for i, _ := range board {
-		for j, _ := range board {
-			if board[i][j] == 0 {
-				return i, j
-			}
-		}
-	}
-	return -1, -1
-}
